@@ -1,0 +1,7 @@
+# 资料语义与接口边界
+
+table.py已有append/update/delete/replace_partition的CAS提交、完整旧像与提交日志；快照含seq与rows_digest。checks.py提供确定的行谓词AST验证与三值计算，CHECK只有FALSE拒绝，UNKNOWN通过。生命周期允许draft、enforcing_unvalidated、validated、failed、dropped，具体转换协议由实现决定；一旦enforcing必须在所有写入口用同一约束版本检查候选新像，未修改旧行不强制全扫。validated绑定某seq和其祖先覆盖证据，此后提交须继续门禁；旧读快照不能冒用新验证结论。验证任务扫描固定起点后认证到发布点的全部变更，或采用其他能证明覆盖的机制。候选撤销、验证状态、正文提交及回执需要原子关联，不能先回成功再补状态。失败证据绑定row_id及其当时版本，过时违例不能自动阻止已修复当前表重新验证。
+
+table.py是单目录实例的同步CAS表替身，完整日志可导出，尚无约束目录或验证任务。checks.py已有行谓词，但当前表提交未安装CHECK门禁。服务重启可由快照及日志复建，新增验证状态需自行保存。
+
+正文摘要绑定完整值，样例数据不限定输入规模；错误不等同空结果，接口使用中文错误说明。

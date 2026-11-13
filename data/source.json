@@ -1,0 +1,33 @@
+{
+  "rows": [
+    {
+      "row_id": "r1",
+      "plant": "A",
+      "qty": 2
+    },
+    {
+      "row_id": "r2",
+      "plant": "B",
+      "qty": -1
+    },
+    {
+      "row_id": "r3",
+      "plant": "A",
+      "qty": null
+    }
+  ],
+  "check": {
+    "op": "ge",
+    "field": "qty",
+    "value": 0
+  },
+  "events": [
+    {
+      "op": "update",
+      "row_id": "r2",
+      "values": {
+        "qty": 3
+      }
+    }
+  ]
+}
